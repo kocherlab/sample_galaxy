@@ -1,0 +1,33 @@
+<tool id="upload_storage" name="Upload storage file" version="0.1">
+
+  <description>to SQLite database</description>
+
+  <command><![CDATA[
+  upload_samples.py
+
+    --sqlite-db $__tool_directory__/kocherDB.sqlite
+    --yaml $__tool_directory__/kocherDB.yml
+
+    --storage-file $storage_file
+
+    --out-log $outfile
+
+    $update
+
+    #if $backup
+      $backup
+    #end if
+
+  ]]></command>
+
+  <inputs>
+    <param format="tabular,tsv" name="storage_file" type="data" label="Storage File" multiple="true"/>
+    <param name="update" type="boolean" truevalue="--update-with-file" falsevalue="" label="Update database" help="Update storage information already stored within the database. File will be used to replace previously uploaded values using the Unique ID of the sample in question. Cannot be used with new samples."/>
+    <param name="backup" type="boolean" truevalue="--backup" falsevalue="--no-backup" label="Generate Backup" help="Generate a backup prior to upload. Not requried for automatic backups to be created."/>
+  </inputs>
+  <outputs>
+    <data format="txt" name="outfile"/>
+  </outputs>
+  <help>
+  </help>
+</tool>

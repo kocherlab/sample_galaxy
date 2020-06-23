@@ -1,0 +1,137 @@
+<tool id="retrieve_samples" name="Retrieve samples" version="0.1">
+
+  <description>from SQLite database</description>
+
+  <macros>
+    <import>kocher_macros.xml</import>
+  </macros> 
+
+  <command><![CDATA[
+  retrieve_samples.py
+    --out $outfile
+    --overwrite
+    --log-stdout
+
+    --sqlite-db $__tool_directory__/kocherDB.sqlite
+    --yaml $__tool_directory__/kocherDB.yml
+
+    #if $assign_results.type == 'tables'
+      #if $assign_results.table_selection
+        #set table_list = ' '.join([table_str.strip() for table_str in str($assign_results.table_selection).split(",")])
+        --table $table_list
+      #end if
+    #end if
+    #if $assign_results.type == 'columns'
+      #if $assign_results.column_selection
+        #set column_list = ' '.join(['"' + column_str.strip() + '"' for column_str in str($assign_results.column_selection).split(",")])
+        --column $column_list
+      #end if
+    #end if
+
+    #if $include_species.assign.type == 'select'
+      #if $include_species.assign.species_selection
+        #set species_list = ' '.join(['"' + species_str.strip() + '"' for species_str in str($include_species.assign.species_selection).split(",")])
+        --include-species $species_list
+      #end if
+    #end if
+    #if $include_species.assign.type == 'enter'
+      #if $include_species.assign.species_text
+        #set species_list = ' '.join(['"' + species_str.strip() + '"' for species_str in str($include_species.assign.species_text).split(",")])
+        --include-species $species_list
+      #end if
+    #end if
+    #if $exclude_species.assign.type == 'select'
+      #if $exclude_species.assign.species_selection
+        #set species_list = ' '.join(['"' + species_str.strip() + '"' for species_str in str($exclude_species.assign.species_selection).split(",")])
+        --exclude-species $species_list
+      #end if
+    #end if
+    #if $exclude_species.assign.type == 'enter'
+      #if $exclude_species.assign.species_text
+        #set species_list = ' '.join(['"' + species_str.strip() + '"' for species_str in str($exclude_species.assign.species_text).split(",")])
+        --exclude-species $species_list
+      #end if
+    #end if
+
+    #if $include_genus.assign.type == 'select'
+      #if $include_genus.assign.genus_selection
+        #set genus_list = ' '.join([genus_str.strip() for genus_str in str($include_genus.assign.genus_selection).split(",")])
+        --include-genus $genus_list
+      #end if
+    #end if
+    #if $include_genus.assign.type == 'enter'
+      #if $include_genus.assign.genus_text
+        #set genus_list = ' '.join([genus_str.strip() for genus_str in str($include_genus.assign.genus_text).split(",")])
+        --include-genus $genus_list
+      #end if
+    #end if
+    #if $exclude_genus.assign.type == 'select'
+      #if $exclude_genus.assign.genus_selection
+        #set genus_list = ' '.join([genus_str.strip() for genus_str in str($exclude_genus.assign.genus_selection).split(",")])
+        --exclude-genus $genus_list
+      #end if
+    #end if
+    #if $exclude_genus.assign.type == 'enter'
+      #if $exclude_genus.assign.genus_text
+        #set genus_list = ' '.join([genus_str.strip() for genus_str in str($exclude_genus.assign.genus_text).split(",")])
+        --exclude-genus $genus_list
+      #end if
+    #end if
+
+    #if $include_column.pairs
+      #for $column_pair in $include_column.pairs
+        #set column_str = '"%s"' % $column_pair.column
+        #set value_list = ['"%s"' % col_value.strip() for col_value in str($column_pair.value).split(",")]
+        #for $value_str in $value_list
+          --include $column_str $value_str
+        #end for
+      #end for
+    #end if
+
+    #if $exclude_column.pairs
+      #for $column_pair in $exclude_column.pairs
+        #set column_str = '"%s"' % $column_pair.column
+        #set value_list = ['"%s"' % col_value.strip() for col_value in str($column_pair.value).split(",")]
+        #for $value_str in $value_list
+          --exclude $column_str $value_str
+        #end for
+      #end for
+    #end if
+
+  ]]></command>
+
+  <inputs>
+
+    <expand macro="results"/>
+
+    <section name="include_species" title="Filter: Specify species to require in returned data" expanded="False" help="Only include samples of the specified species in the returned data. All other samples are excluded from the returned data.">
+      <expand macro="assign_species"/>
+    </section>
+
+    <section name="exclude_species" title="Filter: Select species to exclude from returned data" expanded="False" help="Exclude samples of the specified species in the returned data. All other samples are returned.">
+      <expand macro="assign_species"/>
+    </section>
+
+    <section name="include_genus" title="Filter: Specify genera to require in returned data" expanded="False" help="Only include samples of the specified genera in the returned data. All other samples are excluded from the returned data.">
+      <expand macro="assign_genus"/>
+    </section>
+
+    <section name="exclude_genus" title="Filter: Specify genera to exclude from returned data" expanded="False" help="Exclude samples of the specified genera in the returned data. All other samples are returned.">
+      <expand macro="assign_genus"/>
+    </section>
+
+    <section name="include_column" title="Filter: Specify specific values to require in returned data" expanded="False" help="Only include samples with the specified column and value. All other samples are excluded from the returned data.">
+      <expand macro="assign_col_val"/>
+    </section>
+
+    <section name="exclude_column" title="Filter: Specify specific values to exclude from returned data" expanded="False" help="Exclude samples with the specified column and value. All other samples are returned.">
+      <expand macro="assign_col_val"/>
+    </section>
+
+  </inputs>
+  <outputs>
+    <data format="tsv" name="outfile"/>
+  </outputs>
+  <help>
+  </help>
+</tool>

@@ -1,0 +1,35 @@
+<tool id="upload_collection" name="Upload collection file" version="0.1">
+
+  <description>to SQLite database</description>
+
+  <command><![CDATA[
+  upload_samples.py
+
+    --sqlite-db $__tool_directory__/kocherDB.sqlite
+    --yaml $__tool_directory__/kocherDB.yml
+
+    --app-upload-method Collection
+
+    --app-file $collection_file
+
+    --out-log $outfile
+
+    $update
+
+    #if $backup
+      $backup
+    #end if
+
+  ]]></command>
+
+  <inputs>
+    <param format="tabular,tsv" name="collection_file" type="data" label="Collection File" multiple="true" help="Upload one or more collection files. All files must be converted to tsv (tab-separated values) prior to being able to be selected."/>
+    <param name="update" type="boolean" truevalue="--update-with-file" falsevalue="" label="Update database" help="Update collection information already stored within the database. File will be used to replace previously uploaded values using the Unique ID of the sample in question. Cannot be used with new samples."/>
+    <param name="backup" type="boolean" truevalue="--backup" falsevalue="--no-backup" label="Generate Backup" help="Generate a backup prior to upload. Not requried for automatic backups to be created."/>
+  </inputs>
+  <outputs>
+    <data format="txt" name="outfile"/>
+  </outputs>
+  <help>
+  </help>
+</tool>

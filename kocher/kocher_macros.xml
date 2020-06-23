@@ -1,0 +1,194 @@
+<macros>
+
+  <xml name="results">
+    <conditional name="assign_results" optional="True">
+      <param name="type" type="select" label="Data to Return" refresh_on_change='True' help="Type of information to return. May select entire tables (i.e. all relevant information from an uploaded file) or individual columns.">
+        <option value="tables" selected="True" >Table(s)</option>
+        <option value="columns">Column(s)</option>
+      </param>
+      <when value="tables">
+        <param name="table_selection" type="select" label="Select the tables to return" multiple="true" display="checkboxes" help="Please select one or more tables from the dropdown box.">
+          <option value="Collection">Collection</option>
+          <option value="Storage">Storage</option>
+          <option value="Sequencing">Sequencing</option>
+          <option value="Locations">Locations</option>
+          <option value="Imaging">Imaging</option>
+        </param>
+      </when>
+      <when value="columns">
+        <param name="column_selection" type="select" label="Select the columns to return" multiple="true" display="checkboxes" help="Please select one or more columns from the dropdown box.">
+          <option value="Unique ID">Unique ID</option>
+          <option value="Storage ID">Storage ID</option>
+          <option value="Sample Status">Sample Status</option>
+          <option value="Sample Type">Sample Type</option>
+          <option value="Sample Used">Sample Used</option>
+          <option value="Plate">Plate</option>
+          <option value="Well">Well</option>
+          <option value="Box">Box</option>
+          <option value="Rack">Rack</option>
+          <option value="Freezer">Freezer</option>
+          <option value="Processed By">Processed By</option>
+          <option value="Date Processed">Date Processed</option>
+          <option value="Collected By">Collected By</option>
+          <option value="Date Collected">Date Collected</option>
+          <option value="Time Entered">Time Entered</option>
+          <option value="Sex">Sex</option>
+          <option value="Life Stage">Life Stage</option>
+          <option value="Has Pollen?">Has Pollen?</option>
+          <option value="Species Guess">Species Guess</option>
+          <option value="Sample Preservation Method">Sample Preservation Method</option>
+          <option value="Head Preserved">Head Preserved</option>
+          <option value="Head Preservation Method">Head Preservation Method</option>
+          <option value="From Nest?">From Nest?</option>
+          <option value="Nest Code">Nest Code</option>
+          <option value="Notes">Notes</option>
+          <option value="Collection File">Collection File</option>
+          <option value="Sequence ID">Sequence ID</option>
+          <option value="Status">Status</option>
+          <option value="Species">Species</option>
+          <option value="Reads">Reads</option>
+          <option value="BOLD Identifier">BOLD Identifier</option>
+          <option value="Percent Identity">Percent Identity</option>
+          <option value="Alignment Length">Alignment Length</option>
+          <option value="Sequence Length">Sequence Length</option>
+          <option value="Ambiguous Hits">Ambiguous Hits</option>
+          <option value="BOLD Bins">BOLD Bins</option>
+          <option value="Site Code">Site Code</option>
+          <option value="Location">Location</option>
+          <option value="Greater Location">Greater Location</option>
+          <option value="Country">Country</option>
+          <option value="GPS">GPS</option>
+        </param>
+      </when>
+    </conditional>
+  </xml>
+
+  <xml name="assign_species">
+    <conditional name="assign" optional="True">
+      <param name="type" type="select" label="Assignment method" refresh_on_change='True' help="Species assignment method. May select from a pre-defined species list or directly enter one or more species">
+        <option value="select" selected="True">List of Species</option>
+        <option value="enter">Other</option>
+      </param>
+      <when value="select">
+        <param name="species_selection" type="select" label="Select species" multiple="true" display="checkboxes" help="Please select one or more species from the dropdown box.">
+          <option value="Augochlorella aurata">Augochlorella aurata</option>
+          <option value="Augochlora pura">Augochlora pura</option>
+          <option value="Agapostemon virescens">Agapostemon virescens</option>
+          <option value="Halictus ligatus">Halictus ligatus</option>
+          <option value="Halictus quadricinctus">Halictus quadricinctus</option>
+          <option value="Halictus rubicundus">Halictus rubicundus</option>
+          <option value="Lasioglossum leucozonium">Lasioglossum leucozonium</option>
+          <option value="Lasioglossum marginatum">Lasioglossum marginatum</option>
+          <option value="Lasioglossum figueresi">Lasioglossum figueresi</option>
+          <option value="Lasioglossum zephyrum">Lasioglossum zephyrum</option>
+          <option value="Lasioglossum vierecki">Lasioglossum vierecki</option>
+          <option value="Lasioglossum pauxillum">Lasioglossum pauxillum</option>
+          <option value="Lasioglossum oenotherae">Lasioglossum oenotherae</option>
+          <option value="Lasioglossum malachurum">Lasioglossum malachurum</option>
+          <option value="Lasioglossum calceatum">Lasioglossum calceatum</option>
+          <option value="Lasioglossum albipes">Lasioglossum albipes</option>
+        </param>
+      </when>
+      <when value="enter">
+        <param name="species_text" type="text" label="Enter species" area="True" help="Multiple entries may be seperated by commas">
+          <sanitizer>
+            <valid initial="string.printable">
+              <remove value="&#10;"/>
+            </valid>
+            <mapping initial="none">
+              <add source="&#10;" target=","/>
+            </mapping>
+          </sanitizer>
+        </param>
+      </when>
+    </conditional>
+  </xml>
+
+  <xml name="assign_genus">
+    <conditional name="assign" optional="True">
+      <param name="type" type="select" label="Assignment method" refresh_on_change='True' help="Genus assignment method. May select from a pre-defined list of genera or directly enter one or more genera">
+        <option value="select" selected="True" >List of Genus</option>
+        <option value="enter">Other</option>
+      </param>
+      <when value="select">
+        <param name="genus_selection" type="select" label="Select genus" multiple="true" display="checkboxes" help="Please select one or more genera from the dropdown box.">
+          <option value="Augochlorella">Augochlorella</option>
+          <option value="Augochlora">Augochlora</option>
+          <option value="Agapostemon">Agapostemon</option>
+          <option value="Halictus">Halictus</option>
+          <option value="Lasioglossum">Lasioglossum</option>
+        </param>
+      </when>
+      <when value="enter">
+        <param name="genus_text" type="text" label="Enter genus" area="True" help="Multiple entries may be seperated by commas">
+          <sanitizer>
+            <valid initial="string.printable">
+              <remove value="&#10;"/>
+            </valid>
+            <mapping initial="none">
+              <add source="&#10;" target=","/>
+            </mapping>
+          </sanitizer>
+        </param>
+      </when>
+    </conditional>
+  </xml>
+
+  <xml name="assign_col_val">
+    <repeat name="pairs" title="Column">
+      <param name="column" type="select" label="Select Column">
+        <option value="Unique ID">Unique ID</option>
+        <option value="Storage ID">Storage ID</option>
+        <option value="Sample Status">Sample Status</option>
+        <option value="Sample Type">Sample Type</option>
+        <option value="Sample Used">Sample Used</option>
+        <option value="Plate">Plate</option>
+        <option value="Well">Well</option>
+        <option value="Box">Box</option>
+        <option value="Rack">Rack</option>
+        <option value="Freezer">Freezer</option>
+        <option value="Processed By">Processed By</option>
+        <option value="Date Processed">Date Processed</option>
+        <option value="Collected By">Collected By</option>
+        <option value="Date Collected">Date Collected</option>
+        <option value="Time Entered">Time Entered</option>
+        <option value="Sex">Sex</option>
+        <option value="Life Stage">Life Stage</option>
+        <option value="Has Pollen?">Has Pollen?</option>
+        <option value="Species Guess">Species Guess</option>
+        <option value="Sample Preservation Method">Sample Preservation Method</option>
+        <option value="Head Preserved">Head Preserved</option>
+        <option value="Head Preservation Method">Head Preservation Method</option>
+        <option value="From Nest?">From Nest?</option>
+        <option value="Nest Code">Nest Code</option>
+        <option value="Collection File">Collection File</option>
+        <option value="Sequence ID">Sequence ID</option>
+        <option value="Status">Status</option>
+        <option value="Species">Species</option>
+        <option value="Reads">Reads</option>
+        <option value="BOLD Identifier">BOLD Identifier</option>
+        <option value="Percent Identity">Percent Identity</option>
+        <option value="Alignment Length">Alignment Length</option>
+        <option value="Sequence Length">Sequence Length</option>
+        <option value="Ambiguous Hits">Ambiguous Hits</option>
+        <option value="BOLD Bins">BOLD Bins</option>
+        <option value="Site Code">Site Code</option>
+        <option value="Location">Location</option>
+        <option value="Greater Location">Greater Location</option>
+        <option value="Country">Country</option>
+        <option value="GPS">GPS</option>
+      </param>
+      <param name="value" type="text" label="Enter Value(s)" area="True" help="Comma seperate multiple entries">
+          <sanitizer>
+            <valid initial="string.printable">
+              <remove value="&#10;"/>
+            </valid>
+            <mapping initial="none">
+              <add source="&#10;" target=","/>
+            </mapping>
+          </sanitizer>
+        </param>
+    </repeat>
+  </xml>
+
+</macros>
